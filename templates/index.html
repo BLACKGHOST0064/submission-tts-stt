@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Voice to Text &amp; Text to Speech</title>
+</head>
+<body>
+    <h1>Voice to Text &amp; Text to Speech</h1>
+
+    <hr>
+
+    <h2>1. Voice to Text</h2>
+    <form action="/voice-to-text" method="post" enctype="multipart/form-data">
+        <label for="audio">Select or record audio:</label><br><br>
+        <input type="file" id="audio" name="audio" accept="audio/*" capture required><br><br>
+        <button type="submit">Convert Voice to Text</button>
+    </form>
+
+    {% if stt_error %}
+        <p><strong>Error:</strong> {{ stt_error }}</p>
+    {% endif %}
+
+    {% if stt_result %}
+        <h3>Transcribed Text:</h3>
+        <textarea rows="5" cols="50" readonly>{{ stt_result }}</textarea>
+    {% endif %}
+
+    <hr>
+
+    <h2>2. Text to Speech</h2>
+    <form action="/text-to-speech" method="post">
+        <label for="text">Enter text:</label><br><br>
+        <textarea id="text" name="text" rows="5" cols="50" required>{{ tts_text or "" }}</textarea><br><br>
+        <button type="submit">Convert Text to Speech</button>
+    </form>
+
+    {% if tts_error %}
+        <p><strong>Error:</strong> {{ tts_error }}</p>
+    {% endif %}
+
+    {% if audio_b64 %}
+        <h3>Generated Speech:</h3>
+        <audio controls autoplay>
+            <source src="data:audio/mpeg;base64,{{ audio_b64 }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <p><a href="data:audio/mpeg;base64,{{ audio_b64 }}" download="speech.mp3">Download MP3</a></p>
+    {% endif %}
+</body>
+</html>
