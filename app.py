@@ -9,7 +9,8 @@ from flask import Flask, redirect, render_template, request, url_for
 import speech_recognition as sr
 from gtts import gTTS
 
-app = Flask(__name__)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+app = Flask(__name__, template_folder=os.path.join(BASE_DIR, "templates"))
 
 NATIVE_AUDIO_EXTS = {".wav", ".aiff", ".aif", ".flac"}
 
